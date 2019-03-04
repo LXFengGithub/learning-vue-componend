@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../vue@2.5.17.vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <!-- 标签支持驼峰 <my-inp> || <myInp> -->
+    <!-- <my-inp :title="title" :reg="reg" :errmsg="errmsg" :sucmsg="sucmsg"></my-inp> -->
+    <!-- v-bind 的另一种形式 绑定一个对象, 会依次对这个对象进行绑定 -->
+    <my-inp v-bind="bindmsg"></my-inp>
+  </div>
+  <script>
+    const myInp = {
+      // 只能有一个公共的父级 写2个会报错 如： <div>1</div> <div>2</div>
+      template: `
+      <div>
+          <span>{{title}}</span>
+          <input text="text" v-model="val" />
+          <span>{{msg}}</span>
+      </div>
+      `,
+      props: {
+        title: {
+          type: String,
+          default: '',
+        },
+        reg: {
+          type: RegExp,
+          default: null
+        },
+        errmsg: {
+          type: String,
+          default: "NO"
+        },
+        sucmsg: {
+          type: String,
+          default: "Yes"
+        }
+      },
+      data() {
+        return {
+          val: ''
+        }
+      },
+      computed: {
+        msg() {
+          // 如果邮箱为空就返回。不做操作
+          if (!this.val) {
+            return ''
+          }
+          // 对传递过来的数据进行验证格式是否为reg设定的格式。然后返回相应的结果。
+          return this.reg.test(this.val) ? this.sucmsg : this.errmsg
+        }
+      }
+    }
+
+
+    new Vue({
+      el: "#app",
+      components: {
+        myInp
+      },
+      data: {
+        bindmsg: {
+          title: "Please input QQ Email",
+          errmsg: "❎格式错误，请重新输入",
+          sucmsg: "✅正确",
+          reg: /@qq.com$/
+        }
+      }
+
+    })
+  </script>
+</body>
+
+</html>

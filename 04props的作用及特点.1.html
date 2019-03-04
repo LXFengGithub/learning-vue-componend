@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../vue@2.5.17.vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <!-- father父，son子组件 -->
+    <!-- Vue遵循单向数据流原则，子组件传来的数据（引用值）进行改变。不会影响父级（原始值）。但是父级的数据可以影响子级 
+      如果是传对象的话，单向数据流就会失效。因为双方指向同一个地址。
+      就如：a = {}; b = a; a.name = 'liu'; b.name也是liu。
+    -->
+    <div>Father:{{msg.name}}</div>
+    <button @click="fatherChange">fatherChange</button>
+    <!-- :bind  让msg成为一个属性 父 子组件相互数据传递-->
+    <my-com :msg="msg"></my-com>
+  </div>
+  <script>
+    const myCom = {
+      // props 可以是数组 跟 对象。
+      // 通过props 接到传来的值,进行渲染。 
+      props: ['msg'],
+      template: `
+                  <div>
+                    <div>SON:{{msg.name}}</div>
+                    <div>{{myShow}}</div>
+                    <button @click="change" >Changeshow</button>
+                 </div>
+          `,
+      data() {
+        return {
+          show: 'hell Everyone',
+          // newMsg: this.msg
+          
+        }
+      },
+      methods: {
+        // 子组件的数据改变，父组件相应的数据也发生了改变。他们指向同一个地址
+        change() {
+          // this.show = 'ke.qq.com';
+          this.msg.name = 'son'
+        }
+      },
+      // 计算属性，返回一个附加值。 也叫派生属性，根据已有属性派生出来的新属性
+      // cpmputed 2种赋值方式 方法/属性
+      computed: {
+        // 方法
+        // msg() {
+        //  return this.newMsg + ' Welcome hiema'
+        // },
+        // 属性  如果是属性给一个 get set 方法
+        myShow: {
+          // get取值 跟正常的取值一样
+          // set赋值 是在原有属性能改变的一个属性上进行赋值
+          get() {
+            return this.show + 'Welcome jingSanhu'
+          },
+          set(newVal) {
+            this.show = newVal
+          }
+        }
+      }
+    }
+
+    new Vue({
+      el: '#app',
+      components: {
+        myCom
+      },
+      data: {
+        // msg: "Father",
+        msg: {
+            name : 'Father'
+          }
+      },
+      methods: {
+        // 父组件改变数据，子组件也会跟着改变相应的数据
+        fatherChange() {
+          // this.msg = "Changed";
+          this.msg.name = "Changed"
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

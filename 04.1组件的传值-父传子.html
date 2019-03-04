@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+
+  <div id="app">
+
+    <login v-bind:title="title" />
+
+
+  </div>
+
+  <!-- 另一种写法  建议使用这种写法 -->
+  <template id="template">
+    <div>
+      <div>login组件</div>
+      <div>{{title}}</div>
+    </div>
+  </template>
+
+  <script src="../vue@2.5.17.vue.js"></script>
+  <script>
+    // 1. 在渲染的组件上，使用v-bind 绑定的父元素的数据传递给子组件
+    // 2. 在组件中使用props 接收传递过来的数据
+
+    const login = {
+      template: "#template",
+      props: {
+        title: {
+          type: Number,  //  定义类型
+          default: 0  // 设置默认值，没有获得传值的情况下使用。
+        }
+      }
+    }
+
+    new Vue({
+      el: '#app',
+      data: {
+        title: '1',
+      },
+      components: {
+        login
+      }
+    })
+
+  
+  </script>
+
+</body>
+</html>

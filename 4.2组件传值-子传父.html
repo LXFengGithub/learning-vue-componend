@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+
+  <div id="app">
+    {{msg}}
+    <login @setdata="set">
+    </login>
+  </div>
+
+  <template id="template">
+    <div>
+      <button @click="getData">传值给父组件</button>
+    </div>
+  </template>
+
+  <script src="../vue@2.5.17.vue.js"></script>
+  <script>
+    const login = {
+      template: "#template",
+      methods: {
+        getData() {
+          this.$emit('setdata', '子组件的数据')
+        }
+      }
+    }
+
+    new Vue({
+      el: '#app',
+      data: {
+        msg: 1
+      },
+      methods: {
+        set(data) {
+          this.msg = data
+        }
+      },
+      components: {
+        login
+      }
+    })
+  </script>
+</body>
+</html>

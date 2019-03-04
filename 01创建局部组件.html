@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../vue@2.5.17.vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+
+    <my-com></my-com>
+
+  </div>
+
+  <div id="app2">
+      <!-- 这个用不了，因为不知当前的vue下挂载的 -->
+  </div>
+  <script>
+    // 组件component  局部组件要加s  components  读： 可泡嗯特
+    // 只能在当前的vue环境下使用
+    const myCom = {
+      template: '<div>hello</div>'
+    }
+    new Vue({
+      el: '#app',
+      components: {
+        myCom
+      }
+    })
+
+    new Vue({
+      el: '#app2'
+    })
+  </script>
+</body>
+
+</html>

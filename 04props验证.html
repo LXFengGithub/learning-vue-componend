@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../vue@2.5.17.vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <!-- Vue遵循单向数据流原则，子组件传来的数据（引用值）进行改变。不会影响父级（原始值）。但是父级的数据可以影响子级 
+      如果是传对象的话，单向数据流就会失效。双方指向同一个地址。
+      就如：a = {}; b = a; a.name = 'liu'; b.name也是liu。
+    -->
+    <div>Father:{{msg}}</div>
+    <button @click="fatherChange">fatherChange</button>
+    <!-- :bind  让msg成为一个属性 父 子组件相互数据传递-->
+    <!--写:info="msg"的话展示的是msg的值，不写的话 默认展示default后面的值  -->
+    <my-com :msg="msg" :info="msg"></my-com>
+  </div>
+  <script>
+    const myCom = {
+      // props 可以是数组、对象。
+      // 通过props 接到传来的msg,进行渲染。 
+      props: {
+        msg: {
+          // type可以做类型检测  为了防止赋值操作等时候发生不好的事。类型检测就有必要了
+          type: String,
+          // required 当这个值不符合，类型时会报出异常。提示你是哪一种类型   读： 瑞快儿的   判断是否符合设定类型
+          required: true
+        },
+        // 写这个的时候写对象的形式，把规定的条件写好，这样别人都不用看你的组件，就知道这里传什么值。把规范写明白了就方便很多。
+        info: {
+          type: String,
+          //default提供默认值： 写的话展示值 不写的话 默认展示info   翻译：default  违约，弃权。 读：  /dɪ'fɔlt/
+          default: 'info'
+        }
+      },
+      template: `
+                  <div>
+                    <div>SON:{{msg}}</div>
+                    <div>{{info}}</div>
+                    <button @click="change" >Changeshow</button>
+                 </div>
+          `,
+      data() {
+        return {
+          newMsg: this.msg          
+        }
+      },
+      methods: {
+        change() {
+          this.msg = 'son'
+        }
+      },
+      // computed 2种赋值方式 方法/属性
+      computed: {
+        myShow: {
+          // get取值 跟正常的取值一样
+          // set赋值 是在原有属性能改变的一个属性上进行赋值
+          get() {
+            return this.show + 'Welcome jingSanhu'
+          },
+          set(newVal) {
+            this.show = newVal
+          }
+        }
+      }
+      
+    }
+
+    new Vue({
+      el: '#app',
+      components: {
+        myCom
+      },
+      data: {
+        msg: "Father",
+      },
+      methods: {
+        fatherChange() {
+          this.msg = "Changed";
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

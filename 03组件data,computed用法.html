@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../vue@2.5.17.vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <my-com></my-com>
+  </div>
+  <script>
+    const myCom = {
+      // template: '<div>{{show}}</div>',
+      template: `
+                  <div>
+                    <div>{{myShow}}</div>
+                    <button @click="change" >Changeshow</button>
+                 </div>
+          `,
+      // data 用函数的形式，返回新对象的形式。保证数据唯一性
+      data() {
+        return {
+          show: 'hell Everyone'
+        }
+      },
+      methods: {
+        change() {
+          this.show = 'ke.qq.com';
+          console.log(this.myShow);
+        }
+      },
+      // 计算属性，返回一个附加值。 也叫派生属性，根据已有属性派生出来的新属性
+      // cpmputed 2种赋值方式 方法/属性
+      computed: {
+        // 方法
+        // myShow() {
+        //  return this.show + ' Welcome hiema'
+        // }
+        // 在计算属性的钩子里，每一个对象都有 2个钩子 get() 取值    set()赋值
+        myShow: {
+          // get取值 跟正常的取值一样
+          // get() {
+          //   return this.show + 'Welcome jingSanhu'
+          // },
+          // set赋值 是在原有属性能改变的一个属性上进行赋值
+          get() {
+            return this.show + 'Welcome jingSanhu'
+          },
+          set(newVal) {
+            this.show = newVal
+          }
+        }
+      }
+    }
+
+    new Vue({
+      el: '#app',
+      components: {
+        myCom
+      }
+    })
+  </script>
+</body>
+
+</html>

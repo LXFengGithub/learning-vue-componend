@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../vue@2.5.17.vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <!-- 这个就是组件 dom里用 ‘ - ’，js里用大驼峰式 -->
+    <!-- <my-com></my-com> -->
+  </div>   
+  <div id="app2">
+      <my-com></my-com>
+  </div>
+  <script>
+    // Vue.component( name, {} ) 
+    // 全局组件哪里都能,只要是有vue的环境下
+    Vue.component('myCom', {
+      template: '<div>hello</div>'
+    })
+    new Vue({
+      el: '#app'
+    })
+    new Vue({
+      el: '#app2'
+    })
+  </script>
+</body>
+
+</html>

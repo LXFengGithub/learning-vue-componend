@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>实现父、子组件相互传递</title>
+  <script src="../vue@2.5.17.vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <!-- Vue遵循单向数据流原则，子组件传来的数据（引用值）进行改变。不会影响父级（原始值）。但是父级的数据可以影响子级 
+      如果是传对象的话，单向数据流就会失效。双方指向同一个地址。
+      就如：a = {}; b = a; a.name = 'liu'; b.name也是liu。
+    -->
+    <div>Son --》 Father:{{sonValue}}</div>  
+    <!--自定义事件: tellme 名称: tell   (可自行修改)
+      需求： 把子级的数据给父级     （我们是单向数据流）
+       父级里面的定义的方法可以改变父级里的数据 -->
+    <my-com @tellme="tell"></my-com>
+  </div>
+  <script>
+    const myCom = {
+      template: `
+                  <div>
+                    <input type="text" v-model="value"></input>
+                 </div>
+          `,
+      data() {
+        return {
+         value: ''    
+        }
+      },
+      watch:{
+        // 监听value的变化
+        value() {
+          // 变化了就输出
+          console.log(this.value)
+          // $emit 触发当前组件上定义的事件,   （不是组件内）（Vue原型上的方法） 读： 一米特
+          //用法： $emit( 事件，value)
+          this.$emit('tellme', this.value);
+        }
+      },
+      // Vue.prototype.$emit = function() {}   
+    }
+
+    new Vue({
+      el: '#app',
+      components: {
+        myCom
+      },
+      data: {
+        sonValue: ''
+      },
+      methods: {
+        // fatherChange() {
+        //   this.msg = "Changed";
+        // },
+        /* 1、父级里面的定义的函数方法，能改变父级的值，数据
+          2、通过子级触发父级自定义的函数，就可以把数据当成参数的形式传给父级。 
+          自定义的事件目的 就是这个！！！
+        */
+        tell(value) {
+          this.sonValue = value
+        } 
+      }
+    })
+  </script>
+</body>
+
+</html>
